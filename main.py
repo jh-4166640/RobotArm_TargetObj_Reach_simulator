@@ -1,8 +1,10 @@
-#2024-09-20
-#ptolemy
-#project main source
+import sys
+from PyQt5.QtWidgets import *
 
-print("t")
-#2번째 commit
-#3번째 commit
-#ssss
+app = QApplication(sys.argv)
+label = QLabel("Hello, PyQt")
+label.show()
+
+#print("Before event loop")
+#app.exec_()
+#print("After event loop")
