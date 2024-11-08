@@ -1,7 +1,7 @@
 #import ErrorDoc as ERd
 
 class RobotStatus():
-    link_number=4 #link의 갯수
+    link_number=5 #link의 갯수
     joint_number=6 #joint의 갯수
     link_length=() #link 각각의 길이
     effector_type="" #end-effector 종류
@@ -19,10 +19,10 @@ class RobotStatus():
             _llen (list[int]): Each lenght for link
         """
         if self.link_number != len(llen):
-            pass
+            return 1
             #return ERd.error()
         else :
-            self.link_length += tuple(llen)
+            self.link_length = tuple(llen)
     
     def RegisterEndEffector(self,eftype,eflen):
         """
@@ -57,5 +57,6 @@ class RobotStatus():
             ang = (_start, _stop)
             self.temp_angle_range[idx]=ang
             if self.count_set_angle == self.joint_number:
-                self.motor_angle_range += tuple(self.temp_angle_range)
+                self.motor_angle_range = tuple(self.temp_angle_range)
         
+
