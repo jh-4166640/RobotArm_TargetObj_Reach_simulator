@@ -8,6 +8,16 @@ import ConfSpace as conf
 import RobotPose as rp
 import numpy as np
 from XslxData import writeEXCEL
+def resetEntry():
+    global init_entrys
+    global target_entrys
+    global linkset_entry
+    for i in range(len(linkset_entry)):
+        linkset_entry[i].delete(0,'end')
+    for i in range(len(init_entrys)):
+        init_entrys[i].delete(0,'end')
+    for i in range(len(target_entrys)):
+        target_entrys[i].delete(0,'end')
 
 def simulationFrame(update, tp, run=0):
     plt.cla()
@@ -31,6 +41,7 @@ def simulationFrame(update, tp, run=0):
         ax.set_zlim(-myconf.maxval,myconf.maxval)
         canvas.draw()
 def settingFrame(): # robot setting and create part
+    global linkset_entry
     #------------------------------------createRobot---------------------------------------#
     def createRobot():
         global myconf
@@ -65,6 +76,7 @@ def settingFrame(): # robot setting and create part
         mypos = robotpose.Forward_Kinematics()
         simulationFrame(update=True,tp=0)
         print("create robot")
+    
     #--------------------------------------------------------------------------------------#
     setFrame = tk.Frame(mainwindows,padx=50, width=200,height=750)
     setFrame.grid(row=0,column=1)
@@ -115,8 +127,12 @@ def settingFrame(): # robot setting and create part
     tk.Label(setFrame, text="", borderwidth=1, padx=10, pady=10).grid(row=23,column=0,rowspan=2)    
     set_btns = tk.Button(setFrame,text="create",width=10,height=3,font= '13', foreground='yellow', bg="blue", command=createRobot)
     set_btns.grid(row=25,column=0, columnspan=2)
+    reset_btns = tk.Button(setFrame,text="reset",width=10,height=3,font= '13', foreground='white', bg="red", command=resetEntry)
+    reset_btns.grid(row=25,column=2, columnspan=2)
 
 def runningFrame(): # program run part
+    global init_entrys
+    global target_entrys
     def pre_step():
         global myconf
         global robotpose
@@ -156,7 +172,8 @@ def runningFrame(): # program run part
             if erd.input_NOT_NUM_data("Target Positon", target_entrys[i].get()):
                 return
         if np.sqrt((int(target_entrys[0].get()))**2 + (int(target_entrys[1].get()))**2 + (int(target_entrys[2].get()))**2) > myconf.maxval:
-            erd.Target_OVER_location_error()
+            diff = np.sqrt((int(target_entrys[0].get()))**2 + (int(target_entrys[1].get()))**2 + (int(target_entrys[2].get()))**2) - myconf.maxval
+            erd.Target_OVER_location_error(diff)
             return 
         try:    
             myconf.setTargetLocate(int(target_entrys[0].get()),int(target_entrys[1].get()),int(target_entrys[2].get()))
@@ -167,7 +184,7 @@ def runningFrame(): # program run part
             find_angle=robotpose.Inverse_Kinematics(myconf.getTargetLocate(),myconf.link_length,myconf.motor_angle_range)
             print("find_angle ", find_angle)
             if find_angle == False:
-                erd.Target_OVER_location_error()
+                erd.Target_OVER_ANGLE_error()
             #robotpose.setParam(myconf.link_length,myangle)
             #mypos = robotpose.Forward_Kinematics()
             simulationFrame(update=True,tp=myconf.getTargetLocate(),run=1)

@@ -96,7 +96,7 @@ class RobotPose():
         print('trg angle\n', trg_ang)
         for item in trg_ang:
             if np.isnan(item) == True:
-                erd.Target_OVER_location_error()
+                erd.Target_OVER_ANGLE_error()
                 return False
         result_angle = []
         unit_angle = []

@@ -16,8 +16,8 @@ def index_OutofRange():
     msg.showerror('Index Error',"OutofRange!")
 def LinkList_size_error():
     msg.showerror('Link Error',"Link list size error")
-def Target_OVER_location_error():
-    msg.showerror('Target Error',"can't reach point")
+def Target_OVER_location_error(diff):
+    msg.showerror('Target Error',"can't reach point\nIt's over ",diff," in the space")
 def Target_OVER_ANGLE_error():
     msg.showerror('Angle Error',"can't angle range of operation!")
 def NOT_CREATE_ROBOT():
