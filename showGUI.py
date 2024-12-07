@@ -7,7 +7,7 @@ import ErrorDoc as erd
 import ConfSpace as conf
 import RobotPose as rp
 import numpy as np
-from XslxData import writeEXCEL
+from XslxData import writeEXCELW
 def resetEntry():
     global init_entrys
     global target_entrys
