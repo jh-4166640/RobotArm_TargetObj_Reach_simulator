@@ -7,7 +7,7 @@ import ErrorDoc as erd
 import ConfSpace as conf
 import RobotPose as rp
 import numpy as np
-from XslxData import writeEXCELW
+from XslxData import writeEXCEL
 def resetEntry():
     global init_entrys
     global target_entrys
@@ -104,8 +104,8 @@ def settingFrame(): # robot setting and create part
     for i in range(2,6):
         svset_entry_min[i].insert(0,"-360")
         svset_entry_max[i].insert(0,"360")
-        svset_entry_min[i].config(state=tk.DISABLED)
-        svset_entry_max[i].config(state=tk.DISABLED)
+        #svset_entry_min[i].config(state=tk.DISABLED)
+        #svset_entry_max[i].config(state=tk.DISABLED)
     setlabels[0].grid(row=0,column=0,columnspan=2)
     for i in range(0,3):
         linkset_labels[i].grid(row=i+1,column=0)
@@ -165,6 +165,7 @@ def runningFrame(): # program run part
         global mypos
         global step_index
         global angle_list
+        
         for i in range(0,len(init_entrys)):
             if erd.input_NOT_NUM_data("initialize angle",init_entrys[i].get()):
                 return
@@ -190,6 +191,9 @@ def runningFrame(): # program run part
             simulationFrame(update=True,tp=myconf.getTargetLocate(),run=1)
             angle_list=robotpose.show_ROBOT_MOVEMENT(cur_angle, find_angle, myconf.getUnitOffset())
             if angle_list != False:
+                robotpose.setParam(myconf.link_length,angle_list[0])
+                mypos = robotpose.Forward_Kinematics()
+                simulationFrame(update=True,tp=myconf.getTargetLocate(),run=1)
                 step_index=0
                 sim_btns = [tk.Button(runFrame,text="<",width=5,height=3,font= '13', foreground='black',command=pre_step),
                             tk.Button(runFrame,text=">",width=5,height=3,font= '13', foreground='black',command=next_step)]
