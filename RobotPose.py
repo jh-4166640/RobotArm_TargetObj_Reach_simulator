@@ -98,9 +98,11 @@ class RobotPose():
             if np.isnan(item) == True:
                 erd.Target_OVER_ANGLE_error()
                 return False
+        first_angle = cur_ang[:]
         result_angle = []
         unit_angle = []
         idx = 0
+        result_angle = [first_angle[:]]
         while True:
             end_condition = True
             unit_angle.clear()
